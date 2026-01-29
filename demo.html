@@ -1,258 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Data Analyzer</title>
 
-    <style>
-      :root {
-        --bg: #181818;
-        --panel: #1f1f1f;
-        --panel-dark: #141414;
-        --yellow: #ffdd33;
-        --green: #73c936;
-        --grey: #565f73;
-        --border: #2a2a2a;
-        --text: #f5f5f5;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <title>Data Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 
-      * {
-        box-sizing: border-box;
-      }
 
-      body {
-        margin: 0;
-        height: 100vh;
-        background: var(--bg);
-        font-family: ui-sans-serif, system-ui, -apple-system;
-        color: var(--text);
-        display: flex;
-        flex-direction: column;
-      }
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #0f1115;
+      --panel-dark: #0b0d12;
+      --accent: #60a5fa;
+      --primary: #3b82f6;
+      --grey: #8b93a7;
+      --border: #252a3a;
+      --text: #f5f7fa;
+    }
 
-      header {
-        height: 64px;
-        background: var(--panel);
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        padding: 0 24px;
-        gap: 16px;
-      }
+    * {
+      box-sizing: border-box;
+    }
 
-      header h1 {
-        margin: 0;
-        font-size: 1.3rem;
-        color: var(--yellow);
-      }
+    body {
+      margin: 0;
+      height: 100vh;
+      background: var(--bg);
+      font-family: "Inter", ui-sans-serif, system-ui, -apple-system;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
 
-      header select,
-      header button {
-        background: var(--panel-dark);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px 10px;
-      }
+    header {
+      height: 64px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
 
-      header button {
-        background: var(--green);
-        color: #0f0f0f;
-        font-weight: 600;
-        cursor: pointer;
-      }
+    header h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
 
-      main {
-        flex: 1;
-        display: grid;
-        grid-template-columns: 280px 1fr;
-      }
+    header select,
+    header button {
+      background: var(--panel-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
 
-      .sidebar {
-        background: var(--panel);
-        border-right: 1px solid var(--border);
-        padding: 16px;
-        overflow-y: auto;
-      }
+    header button {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #0f0f0f;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
 
-      .sidebar h2 {
-        margin-top: 0;
-        font-size: 0.85rem;
-        color: var(--grey);
-        text-transform: uppercase;
-      }
+    header button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
 
-      .feature {
-        padding: 8px 10px;
-        border-radius: 6px;
-        background: var(--panel-dark);
-        border: 1px solid var(--border);
-        margin-bottom: 8px;
-        font-size: 0.85rem;
-        cursor: pointer;
-      }
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
 
-      .feature:hover {
-        border-color: var(--green);
-      }
+    .sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 16px;
+      overflow-y: auto;
+    }
 
-      .content {
-        padding: 24px;
-        overflow-y: auto;
-      }
+    .sidebar h2 {
+      margin-top: 0;
+      font-size: 0.85rem;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
 
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(160px, 1fr));
-        gap: 16px;
-      }
+    .feature {
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: var(--panel-dark);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-      .stat {
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
-      }
+    .feature:hover {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.05);
+      transform: translateY(-1px);
+    }
 
-      .stat h3 {
-        margin: 0;
-        font-size: 0.75rem;
-        color: var(--grey);
-        text-transform: uppercase;
-      }
 
-      .stat p {
-        margin: 8px 0 0;
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: var(--yellow);
-      }
 
-      .plot-controls {
-        margin-top: 24px;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-      }
+    .content {
+      padding: 24px;
+      overflow-y: auto;
+    }
 
-      .plot-controls select,
-      .plot-controls button {
-        background: var(--panel-dark);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 8px 10px;
-      }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
+      gap: 16px;
+    }
 
-      .plot-controls button {
-        background: var(--green);
-        color: #0f0f0f;
-        font-weight: 600;
-        cursor: pointer;
-      }
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
 
-      .panel {
-        margin-top: 16px;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 16px;
-        color: var(--grey);
-      }
+    .stat h3 {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
 
-      .panel strong {
-        color: var(--text);
-      }
+    .stat p {
+      margin: 8px 0 0;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
 
-      .panel img {
-        max-width: 100%;
-        border-radius: 8px;
-        margin-top: 8px;
-      }
-    </style>
-  </head>
+    .plot-controls {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-  <body>
-    <header>
-      <h1>Data Analyzer</h1>
+    .plot-controls select,
+    .plot-controls button {
+      background: var(--panel-dark);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
 
-      <select id="fileSelect">
-        <option value="">Select dataset…</option>
-      </select>
+    .plot-controls button {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #0f0f0f;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
 
-      <button onclick="analyze()">Analyze</button>
-    </header>
+    .plot-controls button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
 
-    <main>
-      <aside class="sidebar">
-        <h2>Features</h2>
-        <div id="featureList"></div>
-      </aside>
+    .panel {
+      margin-top: 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      color: var(--grey);
+    }
 
-      <section class="content">
-        <div class="stats" id="stats"></div>
+    .panel strong {
+      color: var(--text);
+    }
 
-        <div class="panel" id="featureStats">
-          Select a feature to view mean and variance
-        </div>
+    .panel img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+  </style>
+</head>
 
-        <div class="plot-controls">
-          <select id="xSelect">
-            <option value="">X variable</option>
-          </select>
+<body>
+  <header>
+    <h1>Data Analyzer</h1>
 
-          <select id="ySelect">
-            <option value="">Y variable</option>
-          </select>
+    <select id="fileSelect">
+      <option value="">Select dataset…</option>
+    </select>
 
-          <button onclick="generatePlot()">Generate Plot</button>
-        </div>
+    <button onclick="analyze()">Analyze</button>
+  </header>
 
-        <div class="panel" id="plotContainer">
-          Select two numeric variables to generate a plot
-        </div>
-      </section>
-    </main>
+  <main>
+    <aside class="sidebar">
+      <h2>Features</h2>
+      <div id="featureList"></div>
+    </aside>
 
-    <script>
-      const API_BASE = "https://api.shabani05.com";
-      let summary = null;
+    <section class="content">
+      <div class="stats" id="stats"></div>
 
-      window.onload = loadFiles;
+      <div class="panel" id="featureStats">
+        Select a feature to view mean and variance
+      </div>
 
-      function displayName(path) {
-        return path.replace(/^\.\/files\//, "").replace(/\.csv$/i, "");
-      }
+      <div class="plot-controls">
+        <select id="xSelect">
+          <option value="">X variable</option>
+        </select>
 
-      async function loadFiles() {
-        const res = await fetch(`${API_BASE}/files`);
-        const data = await res.json();
-        const select = document.getElementById("fileSelect");
+        <select id="ySelect">
+          <option value="">Y variable</option>
+        </select>
 
-        data.files.forEach((file) => {
-          const option = document.createElement("option");
-          option.value = file;
-          option.textContent = displayName(file);
-          select.appendChild(option);
-        });
-      }
+        <button onclick="generatePlot()">Generate Plot</button>
+      </div>
 
-      async function analyze() {
-        const path = document.getElementById("fileSelect").value;
-        if (!path) return;
+      <div class="panel" id="plotContainer">
+        Select two numeric variables to generate a plot
+      </div>
+    </section>
+  </main>
 
-        const res = await fetch(`${API_BASE}/summarize`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path }),
-        });
+  <script>
+    const API_BASE = "https://api.shabani05.com";
+    let summary = null;
 
-        summary = await res.json();
-        renderSummary(summary);
-      }
+    window.onload = loadFiles;
 
-      function renderSummary(data) {
-        document.getElementById("stats").innerHTML = `
+    function displayName(path) {
+      return path.replace(/^\.\/files\//, "").replace(/\.csv$/i, "");
+    }
+
+    async function loadFiles() {
+      const res = await fetch(`${API_BASE}/files`);
+      const data = await res.json();
+      const select = document.getElementById("fileSelect");
+
+      data.files.forEach((file) => {
+        const option = document.createElement("option");
+        option.value = file;
+        option.textContent = displayName(file);
+        select.appendChild(option);
+      });
+    }
+
+    async function analyze() {
+      const path = document.getElementById("fileSelect").value;
+      if (!path) return;
+
+      const res = await fetch(`${API_BASE}/summarize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path }),
+      });
+
+      summary = await res.json();
+      renderSummary(summary);
+    }
+
+    function renderSummary(data) {
+      document.getElementById("stats").innerHTML = `
           <div class="stat">
             <h3>Records</h3>
             <p>${data.rows}</p>
@@ -267,93 +293,94 @@
           </div>
         `;
 
-        const featureList = document.getElementById("featureList");
-        featureList.innerHTML = "";
+      const featureList = document.getElementById("featureList");
+      featureList.innerHTML = "";
 
-        data.columns.forEach((col) => {
-          const div = document.createElement("div");
-          div.className = "feature";
-          div.textContent = col;
-          div.onclick = () => showFeatureStats(col);
-          featureList.appendChild(div);
-        });
+      data.columns.forEach((col) => {
+        const div = document.createElement("div");
+        div.className = "feature";
+        div.textContent = col;
+        div.onclick = () => showFeatureStats(col);
+        featureList.appendChild(div);
+      });
 
-        populateVariableSelectors(data.mean);
-      }
+      populateVariableSelectors(data.mean);
+    }
 
-      function populateVariableSelectors(numericVars) {
-        const x = document.getElementById("xSelect");
-        const y = document.getElementById("ySelect");
+    function populateVariableSelectors(numericVars) {
+      const x = document.getElementById("xSelect");
+      const y = document.getElementById("ySelect");
 
-        x.innerHTML = '<option value="">X variable</option>';
-        y.innerHTML = '<option value="">Y variable</option>';
+      x.innerHTML = '<option value="">X variable</option>';
+      y.innerHTML = '<option value="">Y variable</option>';
 
-        Object.keys(numericVars).forEach((col) => {
-          const optX = document.createElement("option");
-          optX.value = col;
-          optX.textContent = col;
-          x.appendChild(optX);
+      Object.keys(numericVars).forEach((col) => {
+        const optX = document.createElement("option");
+        optX.value = col;
+        optX.textContent = col;
+        x.appendChild(optX);
 
-          const optY = document.createElement("option");
-          optY.value = col;
-          optY.textContent = col;
-          y.appendChild(optY);
-        });
-      }
+        const optY = document.createElement("option");
+        optY.value = col;
+        optY.textContent = col;
+        y.appendChild(optY);
+      });
+    }
 
-      function showFeatureStats(column) {
-        const box = document.getElementById("featureStats");
+    function showFeatureStats(column) {
+      const box = document.getElementById("featureStats");
 
-        const mean = summary.mean[column];
-        const variance = summary.variance[column];
+      const mean = summary.mean[column];
+      const variance = summary.variance[column];
 
-        if (mean === undefined) {
-          box.innerHTML = `
+      if (mean === undefined) {
+        box.innerHTML = `
             <strong>${column}</strong><br /><br />
             Non-numeric feature.<br />
             Mean and variance unavailable.
           `;
-          return;
-        }
+        return;
+      }
 
-        box.innerHTML = `
+      box.innerHTML = `
           <strong>${column}</strong><br /><br />
-          Mean: <span style="color:#ffdd33">${mean.toFixed(
-            4
-          )}</span><br />
-          Variance: <span style="color:#73c936">${variance.toFixed(
-            4
-          )}</span>
+          Mean: <span style="color:#60a5fa">${mean.toFixed(
+        4
+      )}</span><br />
+          Variance: <span style="color:#3b82f6">${variance.toFixed(
+        4
+      )}</span>
         `;
+    }
+
+    async function generatePlot() {
+      const path = document.getElementById("fileSelect").value;
+      const var1 = document.getElementById("xSelect").value;
+      const var2 = document.getElementById("ySelect").value;
+
+      if (!path || !var1 || !var2) return;
+
+      const res = await fetch(`${API_BASE}/plot`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path, var1, var2 }),
+      });
+
+      if (!res.ok) {
+        document.getElementById("plotContainer").textContent =
+          "Plot generation failed";
+        return;
       }
 
-      async function generatePlot() {
-        const path = document.getElementById("fileSelect").value;
-        const var1 = document.getElementById("xSelect").value;
-        const var2 = document.getElementById("ySelect").value;
+      const blob = await res.blob();
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(blob);
 
-        if (!path || !var1 || !var2) return;
+      const container = document.getElementById("plotContainer");
+      container.innerHTML = "";
+      container.appendChild(img);
+    }
+  </script>
+</body>
 
-        const res = await fetch(`${API_BASE}/plot`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ path, var1, var2 }),
-        });
-
-        if (!res.ok) {
-          document.getElementById("plotContainer").textContent =
-            "Plot generation failed";
-          return;
-        }
-
-        const blob = await res.blob();
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(blob);
-
-        const container = document.getElementById("plotContainer");
-        container.innerHTML = "";
-        container.appendChild(img);
-      }
-    </script>
-  </body>
 </html>
